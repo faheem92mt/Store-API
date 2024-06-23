@@ -5,6 +5,7 @@ const getAllProductsStatic = async (req,res) => {
     // const products = await Product.find({featured: true})
     // const products = await Product.find({rating: 5})
 
+    
     const search = 'ab'
     const products = await Product.find({
         name: { $regex: search, $options: 'i'}
