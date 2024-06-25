@@ -22,7 +22,7 @@ const getAllProducts = async (req,res) => {
     console.log(req.query);
 
     // extracting the value from req.query
-    const {featured, company, name} = req.query
+    const {featured, company, name, sort} = req.query
     // creating an empty object
     const queryObject = {}
 
@@ -38,6 +38,8 @@ const getAllProducts = async (req,res) => {
     if(name) {
         queryObject.name = { $regex: name, $options: 'i'}
     }
+
+    
 
     console.log(queryObject);
 
