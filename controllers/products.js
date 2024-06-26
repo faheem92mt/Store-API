@@ -52,6 +52,9 @@ const getAllProducts = async (req,res) => {
         console.log(sortList)
         result = result.sort(sortList)
     }
+    else {
+        result = result.sort('createdAt')
+    }
 
     const products = await result
 
