@@ -4,7 +4,17 @@ const getAllProductsStatic = async (req,res) => {
     
     // const products = await Product.find({}).sort('name')
 
-    const products = await Product.find({}).sort('-name price')
+    // const products = await Product.find({}).sort('-name price')
+
+    // const products = await Product.find({}).select('name price')
+
+    // const products = await Product.find({}).select('name price').limit(10)
+
+    const products = await Product.find({})
+        .sort('name')
+        .select('name price')
+        .limit(10)
+        .skip(1)
 
     // const products = await Product.find({featured: true})
     // const products = await Product.find({rating: 5})
@@ -22,7 +32,7 @@ const getAllProducts = async (req,res) => {
     console.log(req.query);
 
     // extracting the value from req.query
-    const {featured, company, name, sort} = req.query
+    const {featured, company, name, sort, fields} = req.query
     // creating an empty object
     const queryObject = {}
 
@@ -55,6 +65,17 @@ const getAllProducts = async (req,res) => {
     else {
         result = result.sort('createdAt')
     }
+
+    if(fields) {
+        const fieldList = fields.split(',').join(' ')
+        result = result.select(fieldList)
+    }
+
+    const page = Number(req.query.page)
+    const limit = Number(req.query.limit)
+    const skip = (page - 1) * limit
+
+    result = result.skip(skip).limit(limit)
 
     const products = await result
 
