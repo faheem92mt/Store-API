@@ -74,8 +74,10 @@ const getAllProducts = async (req,res) => {
     const page = Number(req.query.page)
     const limit = Number(req.query.limit)
     const skip = (page - 1) * limit
+    
 
-    result = result.skip(skip).limit(limit)
+    result = result.skip(skip).limit
+    (limit)
 
     const products = await result
 
