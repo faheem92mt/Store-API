@@ -10,11 +10,15 @@ const getAllProductsStatic = async (req,res) => {
 
     // const products = await Product.find({}).select('name price').limit(10)
 
-    const products = await Product.find({})
-        .sort('name')
-        .select('name price')
-        .limit(10)
-        .skip(1)
+    // const products = await Product.find({})
+    //     .sort('name')
+    //     .select('name price')
+    //     .limit(10)
+    //     .skip(1)
+
+    const products = await Product.find({ price: {$gt:30} })
+        .select('name company price')
+        .sort('price')
 
     // const products = await Product.find({featured: true})
     // const products = await Product.find({rating: 5})
@@ -32,7 +36,7 @@ const getAllProducts = async (req,res) => {
     console.log(req.query);
 
     // extracting the value from req.query
-    const {featured, company, name, sort, fields} = req.query
+    const {featured, company, name, sort, fields, numericFilters} = req.query
     // creating an empty object
     const queryObject = {}
 
@@ -41,15 +45,17 @@ const getAllProducts = async (req,res) => {
         queryObject.featured = featured === 'true' ? true : false
     }
 
-    if(company) {
-        queryObject.company = company
-    }
-
     if(name) {
         queryObject.name = { $regex: name, $options: 'i'}
     }
 
-    
+    if(company) {
+        queryObject.company = company
+    }
+
+    if(numericFilters) {
+        console.log(numericFilters);
+    }
 
     // console.log(queryObject);
 
